@@ -133,6 +133,11 @@ public class StopWatch {
             this.state = state;
         }
 
+        public void reset(StopWatch watch) {
+            watch.runningState = UNSTARTED_STATE;
+            watch.splitState = SplitState.UNSPLIT;
+        }
+
         public void start(StopWatch watch) {
             if (watch.runningState == STOPPED_STATE) {
                 throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
@@ -271,8 +276,7 @@ public class StopWatch {
      * </p>
      */
     public void reset() {
-        this.runningState = UNSTARTED_STATE;
-        this.splitState = SplitState.UNSPLIT;
+        runningState.reset(this);
     }
 
     /**
