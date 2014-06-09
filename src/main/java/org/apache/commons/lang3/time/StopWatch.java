@@ -158,11 +158,7 @@ public class StopWatch {
         }
 
         public void suspend(StopWatch watch) {
-            if (watch.runningState != RUNNING_STATE) {
-                throw new IllegalStateException("Stopwatch must be running to suspend. ");
-            }
-            watch.stopTime = System.nanoTime();
-            watch.runningState = SUSPENDED_STATE;
+            throw new IllegalStateException("Stopwatch must be running to suspend. ");
         }
 
         public void resume(StopWatch watch) {
@@ -199,6 +195,11 @@ public class StopWatch {
         public void split(StopWatch watch) {
             watch.stopTime = System.nanoTime();
             watch.splitState = SplitState.SPLIT;
+        }
+        @Override
+        public void suspend(StopWatch watch) {
+            watch.stopTime = System.nanoTime();
+            watch.runningState = SUSPENDED_STATE;
         }
     }
 
