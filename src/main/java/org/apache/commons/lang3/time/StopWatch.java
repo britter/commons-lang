@@ -174,6 +174,15 @@ public class StopWatch {
             }
             watch.splitState = SplitState.UNSPLIT;
         }
+
+        public void suspend(StopWatch watch) {
+            if (watch.runningState != RUNNING_STATE) {
+                throw new IllegalStateException("Stopwatch must be running to suspend. ");
+            }
+            watch.stopTime = System.nanoTime();
+            watch.runningState = SUSPENDED_STATE;
+
+        }
     }
 
     private static class UnstartedState extends StopWatchState {
@@ -342,11 +351,7 @@ public class StopWatch {
      *             if the StopWatch is not currently running.
      */
     public void suspend() {
-        if (this.runningState != RUNNING_STATE) {
-            throw new IllegalStateException("Stopwatch must be running to suspend. ");
-        }
-        this.stopTime = System.nanoTime();
-        this.runningState = SUSPENDED_STATE;
+        runningState.suspend(this);
     }
 
     /**
