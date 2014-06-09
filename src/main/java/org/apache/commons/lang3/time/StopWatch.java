@@ -92,6 +92,8 @@ public class StopWatch {
         public void resume(StopWatch watch) {
             throw new IllegalStateException("Stopwatch must be suspended to resume. ");
         }
+
+        public abstract long getNanoTime(StopWatch watch);
     }
 
     private static class UnstartedState extends StopWatchState {
@@ -100,6 +102,10 @@ public class StopWatch {
             watch.startTime = System.nanoTime();
             watch.startTimeMillis = System.currentTimeMillis();
             watch.runningState = RUNNING_STATE;
+        }
+        @Override
+        public long getNanoTime(StopWatch watch) {
+            return 0;
         }
     }
 
@@ -119,6 +125,10 @@ public class StopWatch {
             watch.stopTime = System.nanoTime();
             watch.runningState = SUSPENDED_STATE;
         }
+        @Override
+        public long getNanoTime(StopWatch watch) {
+            return System.nanoTime() - watch.startTime;
+        }
     }
 
     private static class SuspendedState extends StopWatchState {
@@ -131,6 +141,10 @@ public class StopWatch {
             watch.startTime += System.nanoTime() - watch.stopTime;
             watch.runningState = RUNNING_STATE;
         }
+        @Override
+        public long getNanoTime(StopWatch watch) {
+            return watch.stopTime - watch.startTime;
+        }
     }
 
     private static class StoppedState extends StopWatchState {
@@ -138,7 +152,10 @@ public class StopWatch {
         public void start(StopWatch watch) {
             throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
         }
-
+        @Override
+        public long getNanoTime(StopWatch watch) {
+            return watch.stopTime - watch.startTime;
+        }
     }
 
     private static final StopWatchState UNSTARTED_STATE = new UnstartedState();
@@ -332,14 +349,7 @@ public class StopWatch {
      * @since 3.0
      */
     public long getNanoTime() {
-        if (this.runningState == STOPPED_STATE || this.runningState == SUSPENDED_STATE) {
-            return this.stopTime - this.startTime;
-        } else if (this.runningState == UNSTARTED_STATE) {
-            return 0;
-        } else if (this.runningState == RUNNING_STATE) {
-            return System.nanoTime() - this.startTime;
-        }
-        throw new RuntimeException("Illegal running state has occurred.");
+        return runningState.getNanoTime(this);
     }
 
     /**
