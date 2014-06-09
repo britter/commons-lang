@@ -133,6 +133,17 @@ public class StopWatch {
             this.state = state;
         }
 
+        public void start(StopWatch watch) {
+            if (watch.runningState == STOPPED_STATE) {
+                throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
+            }
+            if (watch.runningState != UNSTARTED_STATE) {
+                throw new IllegalStateException("Stopwatch already started. ");
+            }
+            watch.startTime = System.nanoTime();
+            watch.startTimeMillis = System.currentTimeMillis();
+            watch.runningState = RUNNING_STATE;
+        }
     }
 
     private static class UnstartedState extends StopWatchState {
@@ -220,15 +231,7 @@ public class StopWatch {
      *             if the StopWatch is already running.
      */
     public void start() {
-        if (this.runningState == STOPPED_STATE) {
-            throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
-        }
-        if (this.runningState != UNSTARTED_STATE) {
-            throw new IllegalStateException("Stopwatch already started. ");
-        }
-        this.startTime = System.nanoTime();
-        this.startTimeMillis = System.currentTimeMillis();
-        this.runningState = RUNNING_STATE;
+        runningState.start(this);
     }
 
 
