@@ -167,6 +167,13 @@ public class StopWatch {
             watch.stopTime = System.nanoTime();
             watch.splitState = SplitState.SPLIT;
         }
+
+        public void unsplit(StopWatch watch) {
+            if (watch.splitState != SplitState.SPLIT) {
+                throw new IllegalStateException("Stopwatch has not been split. ");
+            }
+            watch.splitState = SplitState.UNSPLIT;
+        }
     }
 
     private static class UnstartedState extends StopWatchState {
@@ -318,10 +325,7 @@ public class StopWatch {
      *             if the StopWatch has not been split.
      */
     public void unsplit() {
-        if (this.splitState != SplitState.SPLIT) {
-            throw new IllegalStateException("Stopwatch has not been split. ");
-        }
-        this.splitState = SplitState.UNSPLIT;
+        runningState.unsplit(this);
     }
 
     /**
