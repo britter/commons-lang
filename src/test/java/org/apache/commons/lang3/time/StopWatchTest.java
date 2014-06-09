@@ -66,7 +66,6 @@ public class StopWatchTest  {
     
     @Test
     public void testStopWatchSimpleGet(){
-        final StopWatch watch = new StopWatch();
         assertEquals(0, watch.getTime());
         assertEquals("00:00:00.000", watch.toString());
         
@@ -77,7 +76,6 @@ public class StopWatchTest  {
     
     @Test
     public void testStopWatchSplit(){
-        final StopWatch watch = new StopWatch();
         watch.start();
         int millis = 550;
         sleep(millis);
@@ -100,7 +98,6 @@ public class StopWatchTest  {
 
     @Test
     public void testStopWatchSuspend(){
-        final StopWatch watch = new StopWatch();
         watch.start();
         sleep(550);
         watch.suspend();
@@ -119,7 +116,6 @@ public class StopWatchTest  {
 
     @Test
     public void testLang315() {
-        final StopWatch watch = new StopWatch();
         watch.start();
         sleep(200);
         watch.suspend();
@@ -133,7 +129,6 @@ public class StopWatchTest  {
     // test bad states
     @Test
     public void testBadStates() {
-        final StopWatch watch = new StopWatch();
         try {
             watch.stop();
             fail("Calling stop on an unstarted StopWatch should throw an exception. ");
@@ -219,7 +214,6 @@ public class StopWatchTest  {
     @Test
     public void testGetStartTime() {
         final long beforeStopWatch = System.currentTimeMillis();
-        final StopWatch watch = new StopWatch();
         try {
             watch.getStartTime();
             fail("Calling getStartTime on an unstarted StopWatch should throw an exception");
@@ -244,7 +238,6 @@ public class StopWatchTest  {
 
     @Test
     public void testBooleanStates() {
-        final StopWatch watch = new StopWatch();
         assertFalse(watch.isStarted());
         assertFalse(watch.isSuspended());
         assertTrue(watch.isStopped());
