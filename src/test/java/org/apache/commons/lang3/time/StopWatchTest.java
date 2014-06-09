@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -33,6 +34,13 @@ import org.junit.Test;
  * @version $Id$
  */
 public class StopWatchTest  {
+
+    private StopWatch watch;
+
+    @Before
+    public void setUp() throws Exception {
+        watch = new StopWatch();
+    }
 
     private void sleep(int millis) {
         try {
@@ -43,7 +51,6 @@ public class StopWatchTest  {
 
     @Test
     public void testStopWatchSimple(){
-        final StopWatch watch = new StopWatch();
         watch.start();
         sleep(550);
         watch.stop();
