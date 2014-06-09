@@ -20,6 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
+
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Assert;
 
 import org.junit.Test;
@@ -31,12 +34,18 @@ import org.junit.Test;
  */
 public class StopWatchTest  {
 
-    //-----------------------------------------------------------------------
+    private void sleep(int millis) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (final InterruptedException ex) {
+        }
+    }
+
     @Test
     public void testStopWatchSimple(){
         final StopWatch watch = new StopWatch();
         watch.start();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(550);
         watch.stop();
         final long time = watch.getTime();
         assertEquals(time, watch.getTime());
@@ -55,7 +64,7 @@ public class StopWatchTest  {
         assertEquals("00:00:00.000", watch.toString());
         
         watch.start();
-            try {Thread.sleep(500);} catch (final InterruptedException ex) {}
+        sleep(500);
         assertTrue(watch.getTime() < 2000);
     }
     
@@ -63,13 +72,14 @@ public class StopWatchTest  {
     public void testStopWatchSplit(){
         final StopWatch watch = new StopWatch();
         watch.start();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        int millis = 550;
+        sleep(millis);
         watch.split();
         final long splitTime = watch.getSplitTime();
         final String splitStr = watch.toSplitString();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(millis);
         watch.unsplit();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(millis);
         watch.stop();
         final long totalTime = watch.getTime();
 
@@ -80,17 +90,17 @@ public class StopWatchTest  {
         assertTrue(totalTime >= 1500);
         assertTrue(totalTime < 1900);
     }
-    
+
     @Test
     public void testStopWatchSuspend(){
         final StopWatch watch = new StopWatch();
         watch.start();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(550);
         watch.suspend();
         final long suspendTime = watch.getTime();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(550);
         watch.resume();
-            try {Thread.sleep(550);} catch (final InterruptedException ex) {}
+        sleep(550);
         watch.stop();
         final long totalTime = watch.getTime();
         
@@ -104,10 +114,10 @@ public class StopWatchTest  {
     public void testLang315() {
         final StopWatch watch = new StopWatch();
         watch.start();
-            try {Thread.sleep(200);} catch (final InterruptedException ex) {}
+        sleep(200);
         watch.suspend();
         final long suspendTime = watch.getTime();
-            try {Thread.sleep(200);} catch (final InterruptedException ex) {}
+        sleep(200);
         watch.stop();
         final long totalTime = watch.getTime();
         assertTrue( suspendTime == totalTime );
