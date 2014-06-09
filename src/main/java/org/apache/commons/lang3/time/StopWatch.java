@@ -181,7 +181,14 @@ public class StopWatch {
             }
             watch.stopTime = System.nanoTime();
             watch.runningState = SUSPENDED_STATE;
+        }
 
+        public void resume(StopWatch watch) {
+            if (watch.runningState != SUSPENDED_STATE) {
+                throw new IllegalStateException("Stopwatch must be suspended to resume. ");
+            }
+            watch.startTime += System.nanoTime() - watch.stopTime;
+            watch.runningState = RUNNING_STATE;
         }
     }
 
@@ -368,11 +375,7 @@ public class StopWatch {
      *             if the StopWatch has not been suspended.
      */
     public void resume() {
-        if (this.runningState != SUSPENDED_STATE) {
-            throw new IllegalStateException("Stopwatch must be suspended to resume. ");
-        }
-        this.startTime += System.nanoTime() - this.stopTime;
-        this.runningState = RUNNING_STATE;
+        runningState.resume(this);
     }
 
     /**
