@@ -58,80 +58,8 @@ package org.apache.commons.lang3.time;
 public class StopWatch {
 
     private static final long NANO_2_MILLIS = 1000000L;
-    
-    /**
-     * Enumeration type which indicates the status of stopwatch.
-     */
-    private enum State {
-
-        UNSTARTED {
-            @Override boolean isStarted() { return false; }
-            @Override boolean isStopped() { return true;  }
-            @Override boolean isSuspended() { return false; }
-        },
-        RUNNING {
-            @Override boolean isStarted() { return true; }
-            @Override boolean isStopped() { return false; }
-            @Override boolean isSuspended() { return false; }
-        },
-        STOPPED {
-            @Override boolean isStarted() { return false; }
-            @Override boolean isStopped() { return true; }
-            @Override boolean isSuspended() { return false; }
-        },
-        SUSPENDED {
-            @Override boolean isStarted() { return true; }
-            @Override boolean isStopped() { return false; }
-            @Override  boolean isSuspended() { return true; }
-        };
-
-        /**
-         * <p>
-         * The method is used to find out if the StopWatch is started. A suspended
-         * StopWatch is also started watch.
-         * </p>
-
-         * @return boolean
-         *             If the StopWatch is started.
-         */
-        abstract boolean isStarted();
-
-        /**
-         * <p>
-         * This method is used to find out whether the StopWatch is stopped. The
-         * stopwatch which's not yet started and explicitly stopped stopwatch is
-         * considered as stopped.
-         * </p>
-         *
-         * @return boolean
-         *             If the StopWatch is stopped.
-         */
-        abstract boolean isStopped();
-
-        /**
-         * <p>
-         * This method is used to find out whether the StopWatch is suspended.
-         * </p>
-         *
-         * @return boolean
-         *             If the StopWatch is suspended.
-         */
-        abstract boolean isSuspended();
-    }
 
     private static abstract class StopWatchState {
-        public State getState() {
-            return state;
-        }
-
-        public void setState(State state) {
-            this.state = state;
-        }
-
-        private State state;
-        protected StopWatchState(State state) {
-            this.state = state;
-        }
 
         public void reset(StopWatch watch) {
             watch.runningState = UNSTARTED_STATE;
@@ -167,9 +95,6 @@ public class StopWatch {
     }
 
     private static class UnstartedState extends StopWatchState {
-        private UnstartedState() {
-            super(State.UNSTARTED);
-        }
         @Override
         public void start(StopWatch watch) {
             watch.startTime = System.nanoTime();
@@ -179,9 +104,6 @@ public class StopWatch {
     }
 
     private static class RunningState extends StopWatchState {
-        private RunningState() {
-            super(State.RUNNING);
-        }
         @Override
         public void stop(StopWatch watch) {
             watch.stopTime = System.nanoTime();
@@ -200,9 +122,6 @@ public class StopWatch {
     }
 
     private static class SuspendedState extends StopWatchState {
-        private SuspendedState() {
-            super(State.SUSPENDED);
-        }
         @Override
         public void stop(StopWatch watch) {
             watch.runningState = STOPPED_STATE;
@@ -215,9 +134,6 @@ public class StopWatch {
     }
 
     private static class StoppedState extends StopWatchState {
-        private StoppedState() {
-            super(State.STOPPED);
-        }
         @Override
         public void start(StopWatch watch) {
             throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
