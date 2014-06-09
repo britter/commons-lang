@@ -77,14 +77,13 @@ public class StopWatchTest  {
     @Test
     public void testStopWatchSplit(){
         watch.start();
-        int millis = 550;
-        sleep(millis);
+        sleep(550);
         watch.split();
         final long splitTime = watch.getSplitTime();
         final String splitStr = watch.toSplitString();
-        sleep(millis);
+        sleep(550);
         watch.unsplit();
-        sleep(millis);
+        sleep(550);
         watch.stop();
         final long totalTime = watch.getTime();
 
