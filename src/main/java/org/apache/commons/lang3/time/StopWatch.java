@@ -119,7 +119,7 @@ public class StopWatch {
         abstract boolean isSuspended();
     }
 
-    private static class StopWatchState {
+    private static abstract class StopWatchState {
         public State getState() {
             return state;
         }
@@ -135,10 +135,34 @@ public class StopWatch {
 
     }
 
-    private static final StopWatchState UNSTARTED_STATE = new StopWatchState(State.UNSTARTED);
-    private static final StopWatchState RUNNING_STATE = new StopWatchState(State.RUNNING);
-    private static final StopWatchState SUSPENDED_STATE = new StopWatchState(State.SUSPENDED);
-    private static final StopWatchState STOPPED_STATE = new StopWatchState(State.STOPPED);
+    private static class UnstartedState extends StopWatchState {
+        private UnstartedState() {
+            super(State.UNSTARTED);
+        }
+    }
+
+    private static class RunningState extends StopWatchState {
+        private RunningState() {
+            super(State.RUNNING);
+        }
+    }
+
+    private static class SuspendedState extends StopWatchState {
+        private SuspendedState() {
+            super(State.SUSPENDED);
+        }
+    }
+
+    private static class StoppedState extends StopWatchState {
+        private StoppedState() {
+            super(State.STOPPED);
+        }
+    }
+
+    private static final StopWatchState UNSTARTED_STATE = new UnstartedState();
+    private static final StopWatchState RUNNING_STATE = new RunningState();
+    private static final StopWatchState SUSPENDED_STATE = new SuspendedState();
+    private static final StopWatchState STOPPED_STATE = new StoppedState();
 
     /**
      * Enumeration type which indicates the split status of stopwatch.
