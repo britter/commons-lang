@@ -143,13 +143,7 @@ public class StopWatch {
         }
 
         public void stop(StopWatch watch) {
-            if (watch.runningState != RUNNING_STATE && watch.runningState != SUSPENDED_STATE) {
-                throw new IllegalStateException("Stopwatch is not running. ");
-            }
-            if (watch.runningState == RUNNING_STATE) {
-                watch.stopTime = System.nanoTime();
-            }
-            watch.runningState = STOPPED_STATE;
+            throw new IllegalStateException("Stopwatch is not running. ");
         }
 
         public void split(StopWatch watch) {
@@ -200,11 +194,20 @@ public class StopWatch {
         private RunningState() {
             super(State.RUNNING);
         }
+        @Override
+        public void stop(StopWatch watch) {
+            watch.stopTime = System.nanoTime();
+            watch.runningState = STOPPED_STATE;
+        }
     }
 
     private static class SuspendedState extends StopWatchState {
         private SuspendedState() {
             super(State.SUSPENDED);
+        }
+        @Override
+        public void stop(StopWatch watch) {
+            watch.runningState = STOPPED_STATE;
         }
     }
 
@@ -216,6 +219,7 @@ public class StopWatch {
         public void start(StopWatch watch) {
             throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
         }
+
     }
 
     private static final StopWatchState UNSTARTED_STATE = new UnstartedState();
