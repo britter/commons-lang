@@ -44,7 +44,7 @@ Apache Commons Lang
 ===================
 
 [![Build Status](https://travis-ci.org/britter/commons-lang.svg)](https://travis-ci.org/britter/commons-lang)
-[![Coverage Status](https://coveralls.io/repos/britter/commons-lang/badge.svg)](https://coveralls.io/r/britter/commons-lang)
+[![Coverage Status](https://coveralls.io/repos/britter/commons-lang/badge.svg?branch=trunk)](https://coveralls.io/r/britter/commons-lang)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-lang3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-lang3/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
